@@ -6,7 +6,34 @@
         xmlns:local="clr-namespace:Vocality"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
+    <Grid Margin="10">
+        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+            <!-- Mic Toggle Button -->
+            <ToggleButton x:Name="MicToggleButton" Content="Toggle Microphone" Width="200" Height="40" Checked="MicToggleButton_Checked" Unchecked="MicToggleButton_Unchecked"/>
+            <!-- Pitch Slider -->
+            <StackPanel>
+                <TextBlock Text="Pitch Shift (semitones)" Margin="0,0,0,0" TextAlignment="Center" />
+                <Slider x:Name="PitchSlider" Minimum="-12" Maximum="12" Value="0" TickFrequency="1" IsSnapToTickEnabled="True" Width="300"/>
+                <TextBlock x:Name="PitchValue" Text="0" HorizontalAlignment="Center" Margin="0,0,0,0"/>
+            </StackPanel>
+            
+            <!-- Preset Dropdown -->
+            <ComboBox x:Name="PresetDropdown" Width="200" Margin="0,0,0,0">
+                <ComboBoxItem Content="Default" />
+                <ComboBoxItem Content="Robot" />
+                <ComboBoxItem Content="Chipmunk" />
+                <ComboBoxItem Content="Demon" />
+            </ComboBox>
+
+            <!-- Recording Toggle Button -->
+            <ToggleButton x:Name="RecordToggleButton" Content="Start Recording" Width="200" Height="40" Checked="RecordToggleButton_Checked" Unchecked="RecordToggleButton_Unchecked" />
+            <TextBlock x:Name="RecordingStatus" Text="Not Recording" HorizontalAlignment="Center" Margin="0,0,0,0" />
+
+            <!-- Loopback Toggle Button -->
+            <ToggleButton x:Name="LoopbackToggleButton" Content="Start Loopback" Width="200" Height="40" Checked="LoopbackToggleButton_Checked" Unchecked="LoopbackToggleButton_Unchecked" />
+            <TextBlock x:Name="LoopbackStatus" Text="Not Looping" HorizontalAlignment="Center" Margin="0,0,0,0" />
+            
+        </StackPanel>
 
     </Grid>
 </Window>
