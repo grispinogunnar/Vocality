@@ -1,0 +1,266 @@
+﻿<Window
+    x:Class="Vocality.Views.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="Vocality"
+    Width="900"
+    Height="520"
+    mc:Ignorable="d">
+
+    <!--  ─────────  COLOUR & STYLE RESOURCES  ─────────  -->
+    <Window.Resources>
+        <!--  Window background  -->
+        <LinearGradientBrush x:Key="WindowGradient" StartPoint="0,0" EndPoint="0,1">
+            <GradientStop Offset="0" Color="#1E1E2E" />
+            <GradientStop Offset="1" Color="#121218" />
+        </LinearGradientBrush>
+
+        <!--  Panels and text  -->
+        <SolidColorBrush x:Key="PanelBackground" Color="#1F1F2F" />
+        <SolidColorBrush x:Key="PanelBorder" Color="#3C3C4A" />
+        <SolidColorBrush x:Key="PrimaryText" Color="WhiteSmoke" />
+
+        <!--  Buttons  -->
+        <Style TargetType="ToggleButton">
+            <Setter Property="Foreground" Value="{StaticResource PrimaryText}" />
+            <Setter Property="Background" Value="#303040" />
+            <Setter Property="BorderBrush" Value="#4A4A5A" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Height" Value="38" />
+            <Setter Property="Width" Value="220" />
+            <Setter Property="Margin" Value="0,5" />
+        </Style>
+
+        <!--  ComboBox  -->
+        <Style TargetType="ComboBox">
+            <Setter Property="Foreground" Value="{StaticResource PrimaryText}" />
+            <Setter Property="Background" Value="#2A2A3A" />
+            <Setter Property="BorderBrush" Value="#4A4A5A" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Margin" Value="0,5" />
+        </Style>
+
+        <!--  TextBlock  -->
+        <Style TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{StaticResource PrimaryText}" />
+        </Style>
+
+        <!--  Slim ScrollBar  -->
+        <Style TargetType="ScrollBar">
+            <Setter Property="Width" Value="6" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ScrollBar">
+                        <Grid Background="Transparent">
+                            <Track x:Name="PART_Track">
+                                <Track.DecreaseRepeatButton>
+                                    <RepeatButton
+                                        Height="0"
+                                        Command="ScrollBar.LineUpCommand"
+                                        Style="{x:Null}" />
+                                </Track.DecreaseRepeatButton>
+                                <Track.Thumb>
+                                    <!--  CornerRadius removed (Thumb does not support it)  -->
+                                    <Thumb
+                                        Height="30"
+                                        Background="#4FC3F7"
+                                        Opacity="0.7" />
+                                </Track.Thumb>
+                                <Track.IncreaseRepeatButton>
+                                    <RepeatButton
+                                        Height="0"
+                                        Command="ScrollBar.LineDownCommand"
+                                        Style="{x:Null}" />
+                                </Track.IncreaseRepeatButton>
+                            </Track>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <DockPanel Background="{StaticResource WindowGradient}">
+
+        <!--  ───────── TOP NAVIGATION BAR ─────────  -->
+        <Border
+            Height="40"
+            Background="#262636"
+            DockPanel.Dock="Top">
+            <StackPanel
+                Margin="10,0"
+                VerticalAlignment="Center"
+                Orientation="Horizontal">
+                <TextBlock
+                    FontSize="16"
+                    FontWeight="Bold"
+                    Text="Vocality" />
+                <Separator Width="15" />
+                <TextBlock
+                    Margin="10,0"
+                    Opacity="0.6"
+                    Text="File" />
+                <TextBlock
+                    Margin="10,0"
+                    Opacity="0.6"
+                    Text="Edit" />
+                <TextBlock
+                    Margin="10,0"
+                    Opacity="0.6"
+                    Text="Help" />
+            </StackPanel>
+        </Border>
+
+        <!--  ───────── MAIN CONTENT ─────────  -->
+        <Grid Margin="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="320" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <!--  LEFT PANEL (scrollable)  -->
+            <Border
+                Grid.Column="0"
+                Padding="0"
+                Background="{StaticResource PanelBackground}"
+                BorderBrush="{StaticResource PanelBorder}"
+                BorderThickness="1"
+                CornerRadius="6">
+                <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                    <StackPanel Margin="15">
+
+                        <!--  DEVICE SELECTORS  -->
+                        <StackPanel>
+                            <TextBlock
+                                Margin="0,0,0,5"
+                                FontWeight="Bold"
+                                Text="Audio Devices" />
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock
+                                    Width="55"
+                                    VerticalAlignment="Center"
+                                    Text="Input:" />
+                                <ComboBox
+                                    x:Name="InputDeviceSelector"
+                                    Width="220"
+                                    SelectionChanged="InputDeviceSelector_SelectionChanged" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock
+                                    Width="55"
+                                    VerticalAlignment="Center"
+                                    Text="Output:" />
+                                <ComboBox
+                                    x:Name="OutputDeviceSelector"
+                                    Width="220"
+                                    SelectionChanged="OutputDeviceSelector_SelectionChanged" />
+                            </StackPanel>
+                        </StackPanel>
+
+                        <Separator Margin="0,10" />
+
+                        <!--  MICROPHONE & LOOPBACK  -->
+                        <StackPanel>
+                            <TextBlock
+                                Margin="0,0,0,5"
+                                FontWeight="Bold"
+                                Text="Microphone" />
+                            <ToggleButton
+                                x:Name="MicToggleButton"
+                                Checked="MicToggleButton_Checked"
+                                Content="Toggle Microphone"
+                                Unchecked="MicToggleButton_Unchecked" />
+                            <ToggleButton
+                                x:Name="LoopbackToggleButton"
+                                Checked="LoopbackToggleButton_Checked"
+                                Content="Start Loopback"
+                                Unchecked="LoopbackToggleButton_Unchecked" />
+                            <TextBlock
+                                x:Name="MicStatus"
+                                Margin="0,5"
+                                FontStyle="Italic"
+                                Foreground="LightGray"
+                                Text="Microphone inactive" />
+                            <TextBlock
+                                x:Name="LoopbackStatus"
+                                FontStyle="Italic"
+                                Foreground="LightGray"
+                                Text="Not Looping" />
+                        </StackPanel>
+
+                        <Separator Margin="0,10" />
+
+                        <!--  PITCH & PRESETS  -->
+                        <StackPanel>
+                            <TextBlock
+                                Margin="0,0,0,5"
+                                FontWeight="Bold"
+                                Text="Pitch Shift (semitones)" />
+                            <Slider
+                                x:Name="PitchSlider"
+                                Width="260"
+                                IsSnapToTickEnabled="True"
+                                Maximum="12"
+                                Minimum="-12"
+                                TickFrequency="1"
+                                ValueChanged="PitchSlider_ValueChanged"
+                                Value="0" />
+                            <TextBlock
+                                x:Name="PitchValue"
+                                Margin="0,5"
+                                HorizontalAlignment="Center"
+                                Text="0" />
+                            <ComboBox
+                                x:Name="PresetDropdown"
+                                Width="260"
+                                SelectedIndex="0">
+                                <ComboBoxItem Content="Default" />
+                                <ComboBoxItem Content="Robot" />
+                                <ComboBoxItem Content="Chipmunk" />
+                                <ComboBoxItem Content="Demon" />
+                            </ComboBox>
+                        </StackPanel>
+
+                        <Separator Margin="0,10" />
+
+                        <!--  RECORDING  -->
+                        <StackPanel>
+                            <TextBlock
+                                Margin="0,0,0,5"
+                                FontWeight="Bold"
+                                Text="Recording" />
+                            <ToggleButton
+                                x:Name="RecordToggleButton"
+                                Checked="RecordToggleButton_Checked"
+                                Content="Start Recording"
+                                Unchecked="RecordToggleButton_Unchecked" />
+                            <TextBlock
+                                x:Name="RecordingStatus"
+                                Margin="0,5"
+                                FontStyle="Italic"
+                                Foreground="LightGray"
+                                Text="Not Recording" />
+                        </StackPanel>
+                    </StackPanel>
+                </ScrollViewer>
+            </Border>
+
+            <!--  RIGHT PANEL (visualiser)  -->
+            <Border
+                Grid.Column="1"
+                Margin="10,0,0,0"
+                Background="#111118"
+                BorderBrush="{StaticResource PanelBorder}"
+                BorderThickness="1"
+                CornerRadius="6">
+                <Canvas
+                    x:Name="WaveformCanvas"
+                    Width="540"
+                    Height="360" />
+            </Border>
+        </Grid>
+    </DockPanel>
+</Window>
